@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
@@ -14,8 +16,8 @@ export default function Home() {
             About, builder, founder, engineer.
           </h2>
           <p className="text-base text-text-secondary mb-4 leading-relaxed">
-            Im the co-founder of Solara. Previously, I led engineering at
-            Radiant AI. I enjoy working on both the frontend and backend.
+            I'm the co-founder of Induct and currently a Software Engineering Intern at Stripe. 
+            I enjoy working on both the frontend and backend.
             Based in New York, NY.
           </p>
           <p className="text-base text-accent-blue">
@@ -31,41 +33,40 @@ export default function Home() {
 
           <div className="space-y-6">
             <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-accent-blue border-2 border-foreground flex items-center justify-center text-background font-bold">
-                S
+              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                <Image
+                  src="/pxArt.png"
+                  alt="Stripe logo"
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Solara</h3>
+                  <h3 className="text-lg font-bold text-foreground">Stripe</h3>
                   <span className="text-sm text-text-secondary">→</span>
                 </div>
-                <p className="text-text-secondary">Solar energy platform</p>
+                <p className="text-text-secondary">Software Engineering Intern</p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-text-secondary border-2 border-foreground flex items-center justify-center text-background font-bold">
-                D
+              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                <Image
+                  src="/pxArt (1).png"
+                  alt="Induct logo"
+                  width={48}
+                  height={48}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">DeckHub</h3>
+                  <h3 className="text-lg font-bold text-foreground">Induct</h3>
                   <span className="text-sm text-text-secondary">→</span>
                 </div>
-                <p className="text-text-secondary">Presentation software</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
-                S
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">SentryBot</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Automation tool</p>
+                <p className="text-text-secondary">Co-Founder</p>
               </div>
             </div>
           </div>
