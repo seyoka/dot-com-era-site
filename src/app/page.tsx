@@ -51,6 +51,16 @@ export default function Home() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
+    playToggleSound();
+  };
+
+  const toggleSound = () => {
+    const newSoundState = !soundEnabled;
+    setSoundEnabled(newSoundState);
+    localStorage.setItem("soundEnabled", newSoundState.toString());
+    if (newSoundState) {
+      playBeep(1000, 0.2); // Test beep when enabling sound
+    }
   };
 
   return (
