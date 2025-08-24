@@ -235,7 +235,7 @@ export default function Home() {
 
           <div className="mt-6 p-4 pixel-border bg-border-light">
             <p className="text-sm text-text-secondary text-center">
-              💾 Tech stack icons coming soon! Currently brewing in the digital coffee pot...
+              💾 Tech stack icons coming soon!
             </p>
           </div>
         </div>
