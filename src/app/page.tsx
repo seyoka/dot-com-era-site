@@ -1,13 +1,48 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
+  const [soundEnabled, setSoundEnabled] = useState(false);
+
+  // Sound effect functions
+  const playBeep = useCallback((frequency: number, duration: number) => {
+    if (!soundEnabled) return;
+
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'square'; // Retro square wave sound
+
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    } catch (error) {
+      console.log('Audio not supported');
+    }
+  }, [soundEnabled]);
+
+  const playHoverSound = useCallback(() => playBeep(800, 0.1), [playBeep]);
+  const playClickSound = useCallback(() => playBeep(400, 0.15), [playBeep]);
+  const playToggleSound = useCallback(() => {
+    playBeep(600, 0.1);
+    setTimeout(() => playBeep(800, 0.1), 100);
+  }, [playBeep]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
+    const savedSound = localStorage.getItem("soundEnabled") === "true";
     setTheme(savedTheme);
+    setSoundEnabled(savedSound);
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
@@ -99,6 +134,24 @@ export default function Home() {
                 <p className="text-text-secondary">Co-Founder</p>
               </div>
             </div>
+
+            {/* Education Subsection */}
+            <div className="section-divider pt-8">
+              <h3 className="text-xl font-bold mb-6 text-foreground">Education</h3>
+
+              <div className="flex items-start gap-4 work-item">
+                <div className="w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
+                  UL
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-lg font-bold text-foreground">University of Limerick</h4>
+                    <span className="text-sm text-text-secondary">→</span>
+                  </div>
+                  <p className="text-text-secondary">BSc in Immersive Software Engineering</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -161,10 +214,10 @@ export default function Home() {
       <section className="mb-16">
         <div className="section-divider pt-8">
           <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Contact</h2>
-          
+
           <div className="pixel-border bg-background p-8">
             <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
-              
+
               {/* LinkedIn */}
               <div className="flex items-center gap-4 work-item">
                 <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
@@ -196,7 +249,7 @@ export default function Home() {
               </div>
 
             </div>
-            
+
             {/* Email */}
             <div className="mt-8 text-center">
               <div className="inline-block pixel-border bg-border-light p-4">

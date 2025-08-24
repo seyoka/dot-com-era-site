@@ -94,18 +94,39 @@ a:hover {
   font-size: 12px;
 }
 
-/* Work item hover effects */
+/* Enhanced work item hover effects */
 .work-item {
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .work-item:hover {
-  transform: translate(1px, 1px);
+  transform: translate(2px, 2px);
+  box-shadow: -2px -2px 0px var(--accent-blue);
 }
 
 .work-item:hover .work-icon {
   background: var(--accent-purple);
+  animation: pulse 0.3s ease;
+  box-shadow: 0 0 8px var(--accent-purple);
+}
+
+.work-item:hover h3,
+.work-item:hover h4 {
+  color: var(--accent-blue);
+  text-shadow: 1px 1px 0px var(--border-light);
+}
+
+.work-item:hover .text-text-secondary {
+  color: var(--foreground);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* Retro text effects */
@@ -128,6 +149,82 @@ a:hover {
 
 .blink {
   animation: blink 2s infinite;
+}
+
+/* Retro hover effects for buttons and clickable elements */
+.retro-hover {
+  transition: all 0.1s ease;
+  position: relative;
+}
+
+.retro-hover:hover {
+  animation: retro-glitch 0.3s ease;
+}
+
+.retro-hover:active {
+  transform: translate(2px, 2px);
+}
+
+/* Glitch effect */
+@keyframes retro-glitch {
+  0% { transform: translate(0); }
+  10% { transform: translate(-1px, 1px); }
+  20% { transform: translate(1px, -1px); }
+  30% { transform: translate(-1px, -1px); }
+  40% { transform: translate(1px, 1px); }
+  50% { transform: translate(-1px, 1px); }
+  60% { transform: translate(1px, -1px); }
+  70% { transform: translate(-1px, -1px); }
+  80% { transform: translate(1px, 1px); }
+  90% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0); }
+}
+
+/* Theme toggle enhanced animations */
+.theme-toggle {
+  position: relative;
+  width: 80px;
+  height: 32px;
+  border: 2px solid var(--foreground);
+  background: var(--background);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 2px 2px 0px var(--border-light);
+}
+
+.theme-toggle:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-light);
+  animation: retro-buzz 0.2s ease;
+}
+
+@keyframes retro-buzz {
+  0%, 100% { transform: translate(1px, 1px); }
+  25% { transform: translate(0px, 1px); }
+  50% { transform: translate(1px, 0px); }
+  75% { transform: translate(0px, 0px); }
+}
+
+/* Section headers with typing effect on hover */
+.retro-text:hover {
+  animation: typing-glow 0.5s ease;
+}
+
+@keyframes typing-glow {
+  0%, 100% { text-shadow: 1px 1px 0px var(--border-light); }
+  50% { text-shadow: 1px 1px 0px var(--accent-blue), 0 0 5px var(--accent-blue); }
+}
+
+/* Skills icons enhanced hover */
+.pixel-border:hover {
+  animation: pixel-pop 0.2s ease;
+  box-shadow: 2px 2px 0px var(--accent-blue);
+}
+
+@keyframes pixel-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
 }
 
 /* Retro Theme Toggle Switch */
