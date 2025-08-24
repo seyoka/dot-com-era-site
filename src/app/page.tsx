@@ -67,41 +67,36 @@ export default function Home() {
 
           <div className="space-y-6">
             <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-accent-blue border-2 border-foreground flex items-center justify-center text-background font-bold">
-                S
+              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                <img
+                  src="/pxArt.png"
+                  alt="Stripe logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Solara</h3>
+                  <h3 className="text-lg font-bold text-foreground">Stripe</h3>
                   <span className="text-sm text-text-secondary">→</span>
                 </div>
-                <p className="text-text-secondary">Solar energy platform</p>
+                <p className="text-text-secondary">Software Engineering Intern</p>
               </div>
             </div>
 
             <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-text-secondary border-2 border-foreground flex items-center justify-center text-background font-bold">
-                D
+              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                <img
+                  src="/pxArt (1).png"
+                  alt="Induct logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">DeckHub</h3>
+                  <h3 className="text-lg font-bold text-foreground">Induct</h3>
                   <span className="text-sm text-text-secondary">→</span>
                 </div>
-                <p className="text-text-secondary">Presentation software</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 work-item">
-              <div className="work-icon w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
-                S
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">SentryBot</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Automation tool</p>
+                <p className="text-text-secondary">Co-Founder</p>
               </div>
             </div>
           </div>

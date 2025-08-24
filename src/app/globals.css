@@ -24,25 +24,23 @@
   --color-accent-purple: var(--accent-purple);
   --color-border-light: var(--border-light);
   --color-text-secondary: var(--text-secondary);
-  --font-pixel: 'Pixelify Sans', monospace;
+  --font-sans: 'Pixelify Sans', monospace;
   --font-mono: 'Pixelify Sans', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ffffff;
-    --border-light: #333;
-    --text-secondary: #888;
-  }
-}
+/* Remove prefers-color-scheme to use manual toggle only */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Pixelify Sans', monospace;
+  font-family: 'Pixelify Sans', monospace !important;
   font-size: 14px;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  font-family: 'Pixelify Sans', monospace !important;
 }
 
 /* Pixel art aesthetic */
