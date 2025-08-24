@@ -10,6 +10,13 @@
   --text-secondary: #697386;
 }
 
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --border-light: #333;
+  --text-secondary: #888;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -129,4 +136,75 @@ a:hover {
 
 .blink {
   animation: blink 2s infinite;
+}
+
+/* Retro Theme Toggle Switch */
+.theme-toggle {
+  position: relative;
+  width: 80px;
+  height: 32px;
+  border: 2px solid var(--foreground);
+  background: var(--background);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 2px 2px 0px var(--border-light);
+}
+
+.theme-toggle:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-light);
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-blue);
+  border: 1px solid var(--foreground);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--background);
+  font-weight: bold;
+}
+
+.theme-toggle[data-theme="dark"] .theme-toggle-slider {
+  transform: translateX(46px);
+  background: var(--accent-purple);
+}
+
+.theme-toggle-labels {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  right: 8px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  font-weight: bold;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+/* Theme toggle container */
+.theme-toggle-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
 }
