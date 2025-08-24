@@ -3,8 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+type Section = "dev" | "work" | "projects" | "contact";
+
 export default function Home() {
   const [theme, setTheme] = useState("light");
+  const [activeSection, setActiveSection] = useState<Section>("dev");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
@@ -19,226 +23,267 @@ export default function Home() {
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Theme Toggle */}
-      <div className="theme-toggle-container">
-        <div className="theme-toggle-label">
-          {theme === "light" ? "☀️" : "🌙"}
-        </div>
-        <div
-          className="theme-toggle"
-          data-theme={theme}
-          onClick={toggleTheme}
-        >
-          <div className="theme-toggle-slider">
-            {theme === "light" ? "☀" : "☾"}
-          </div>
-          <div className="theme-toggle-labels">
-            <span>L</span>
-            <span>D</span>
-          </div>
-        </div>
-      </div>
-      {/* Header */}
-      <header className="mb-16">
-        <h1 className="text-5xl font-bold mb-4 text-foreground">
-          Ryan Morrissey
-        </h1>
-        <p className="text-xl text-accent-blue mb-2">
-          Software is eating the world!
-        </p>
-        <div className="border-t-2 border-border-light mt-8 pt-8">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">
-            About, builder, founder, engineer.
-          </h2>
-          <p className="text-base text-text-secondary mb-4 leading-relaxed">
-            Hey I&apos;m Ryan, welcome to my personal site! Here is all things about me :)
-          </p>
-          <p className="text-base text-accent-blue">
-            Site best viewed in Netscape Navigator.
-          </p>
-        </div>
-      </header>
+  const switchSection = (section: Section) => {
+    if (section === activeSection || isLoading) return;
+    
+    setIsLoading(true);
+    setTimeout(() => {
+      setActiveSection(section);
+      setIsLoading(false);
+    }, 800);
+  };
 
-      {/* Work Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Work</h2>
+  const navigationItems = [
+    { id: "dev" as Section, label: "/dev", icon: "👨‍💻", description: "About & Skills" },
+    { id: "work" as Section, label: "/work", icon: "💼", description: "Experience" },
+    { id: "projects" as Section, label: "/projects", icon: "📁", description: "Portfolio" },
+    { id: "contact" as Section, label: "/contact", icon: "📧", description: "Get in touch" }
+  ];
 
-          <div className="space-y-6">
-            <div className="flex items-start gap-4 work-item">
-              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <Image
-                  src="/pxArt.png"
-                  alt="Stripe logo"
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="loading-screen">
+          <div className="loading-content">
+            <div className="loading-text">Loading...</div>
+            <div className="loading-bar-container">
+              <div className="loading-bar">
+                <div className="loading-progress"></div>
               </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Stripe</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Software Engineering Intern</p>
-              </div>
+              <div className="loading-percentage">█████████████████████</div>
             </div>
-
-            <div className="flex items-start gap-4 work-item">
-              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <Image
-                  src="/pxArt (1).png"
-                  alt="Induct logo"
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Induct</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Co-Founder</p>
-              </div>
-            </div>
-
-            {/* Education Subsection */}
-            <div className="section-divider pt-8">
-              <h3 className="text-xl font-bold mb-6 text-foreground">Education</h3>
-
-              <div className="flex items-start gap-4 work-item">
-                <div className="w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
-                  UL
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-bold text-foreground">University of Limerick</h4>
-                    <span className="text-sm text-text-secondary">→</span>
-                  </div>
-                  <p className="text-text-secondary">BSc in Immersive Software Engineering</p>
-                </div>
-              </div>
+            <div className="loading-dots">
+              <span>.</span><span>.</span><span>.</span>
             </div>
           </div>
         </div>
-      </section>
+      );
+    }
 
-      {/* Skills/Tech Stack Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Skills & Tech Stack</h2>
+    switch (activeSection) {
+      case "dev":
+        return (
+          <div className="content-section">
+            <div className="terminal-header">
+              <span className="terminal-path">~/dev/about</span>
+              <span className="cursor-blink">_</span>
+            </div>
+            
+            <h1 className="main-title">Ryan Morrissey</h1>
+            <p className="tagline">Always debugging. Occasionally sleeping.</p>
+            
+            <div className="section-break"></div>
+            
+            <h2>About, builder, founder, engineer.</h2>
+            <p className="about-text">
+              Hey I&apos;m Ryan, welcome to my personal site! Here is all things about me :)
+            </p>
+            <p className="netscape-note">Site best viewed in Netscape Navigator.</p>
 
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-            {/* Placeholder tech icons - will be replaced with actual images */}
-            {Array.from({ length: 12 }, (_, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-3 pixel-border bg-background hover:bg-border-light transition-all duration-100 cursor-pointer group">
-                <div className="w-8 h-8 bg-text-secondary border border-foreground flex items-center justify-center text-background text-xs font-bold">
-                  {i + 1}
+            <div className="section-break"></div>
+            
+            <h2>Skills & Tech Stack</h2>
+            <div className="skills-grid">
+              {Array.from({ length: 12 }, (_, i) => (
+                <div key={i} className="skill-item">
+                  <div className="skill-icon">{i + 1}</div>
+                  <span className="skill-name">Tech {i + 1}</span>
                 </div>
-                <span className="text-xs text-text-secondary text-center group-hover:text-foreground">
-                  Tech {i + 1}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 p-4 pixel-border bg-border-light">
-            <p className="text-sm text-text-secondary text-center">
+              ))}
+            </div>
+            <div className="placeholder-note">
               💾 Tech stack icons coming soon! Currently brewing in the digital coffee pot...
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Projects</h2>
-          <div className="pixel-border bg-border-light p-6">
-            <p className="text-text-secondary text-center ascii-decoration">
-              Coming soon... Check back later for updates!
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Reading Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Reading</h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4">
-              <h3 className="text-base font-bold text-foreground mb-1">
-                Tools and Text Editors
-              </h3>
-              <p className="text-sm text-text-secondary">April 8, 2024</p>
             </div>
           </div>
-        </div>
-      </section>
+        );
 
-      {/* Contact Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Contact</h2>
+      case "work":
+        return (
+          <div className="content-section">
+            <div className="terminal-header">
+              <span className="terminal-path">~/work/experience</span>
+              <span className="cursor-blink">_</span>
+            </div>
+            
+            <h1>Work Experience</h1>
+            
+            <div className="work-items">
+              <div className="work-item">
+                <div className="work-icon">
+                  <Image
+                    src="/pxArt.png"
+                    alt="Stripe logo"
+                    width={48}
+                    height={48}
+                    className="work-logo"
+                  />
+                </div>
+                <div className="work-details">
+                  <h3>Stripe</h3>
+                  <p>Software Engineering Intern</p>
+                  <span className="work-arrow">→</span>
+                </div>
+              </div>
+              
+              <div className="work-item">
+                <div className="work-icon">
+                  <Image
+                    src="/pxArt (1).png"
+                    alt="Induct logo"
+                    width={48}
+                    height={48}
+                    className="work-logo"
+                  />
+                </div>
+                <div className="work-details">
+                  <h3>Induct</h3>
+                  <p>Co-Founder</p>
+                  <span className="work-arrow">→</span>
+                </div>
+              </div>
+            </div>
 
-          <div className="pixel-border bg-background p-8">
-            <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
+            <div className="section-break"></div>
+            
+            <h2>Education</h2>
+            <div className="work-item">
+              <div className="work-icon education-icon">UL</div>
+              <div className="work-details">
+                <h3>University of Limerick</h3>
+                <p>BSc in Immersive Software Engineering</p>
+                <span className="work-arrow">→</span>
+              </div>
+            </div>
+          </div>
+        );
 
-              {/* LinkedIn */}
-              <div className="flex items-center gap-4 work-item">
-                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+      case "projects":
+        return (
+          <div className="content-section">
+            <div className="terminal-header">
+              <span className="terminal-path">~/projects/portfolio</span>
+              <span className="cursor-blink">_</span>
+            </div>
+            
+            <h1>Projects</h1>
+            <div className="construction-area">
+              <p className="construction-text">▓▓▓ Coming soon... Check back later for updates! ▓▓▓</p>
+            </div>
+            
+            <div className="section-break"></div>
+            
+            <h2>Reading</h2>
+            <div className="reading-item">
+              <h3>Tools and Text Editors</h3>
+              <p className="reading-date">April 8, 2024</p>
+            </div>
+          </div>
+        );
+
+      case "contact":
+        return (
+          <div className="content-section">
+            <div className="terminal-header">
+              <span className="terminal-path">~/contact/info</span>
+              <span className="cursor-blink">_</span>
+            </div>
+            
+            <h1>Contact Information</h1>
+            
+            <div className="contact-methods">
+              <div className="contact-item">
+                <div className="contact-icon">
                   <Image
                     src="/linkedin.png"
                     alt="LinkedIn"
                     width={48}
                     height={48}
-                    className="w-full h-full object-cover"
+                    className="contact-logo"
                   />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">LinkedIn</h3>
-                  <p className="text-text-secondary text-sm">Professional network</p>
+                <div className="contact-details">
+                  <h3>LinkedIn</h3>
+                  <p>Professional network</p>
+                  <span className="contact-arrow">→</span>
                 </div>
               </div>
-
-              {/* GitHub */}
-              <div className="flex items-center gap-4 work-item">
-                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+              
+              <div className="contact-item">
+                <div className="contact-icon">
                   <Image
                     src="/github.png"
                     alt="GitHub"
                     width={48}
                     height={48}
-                    className="w-full h-full object-cover"
+                    className="contact-logo"
                   />
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">GitHub</h3>
-                  <p className="text-text-secondary text-sm">Code repositories</p>
+                <div className="contact-details">
+                  <h3>GitHub</h3>
+                  <p>Code repositories</p>
+                  <span className="contact-arrow">→</span>
                 </div>
               </div>
-
             </div>
 
-            {/* Email */}
-            <div className="mt-8 text-center">
-              <div className="inline-block pixel-border bg-border-light p-4">
-                <h3 className="text-lg font-bold text-foreground mb-2">📧 Email</h3>
-                <p className="text-accent-blue font-mono text-sm">
-                  ryanj[dot]morrissey@gmail.com
-                </p>
-                <p className="text-xs text-text-secondary mt-2">
-                  (Because spam bots can&apos;t handle the dot notation 🤖)
-                </p>
-              </div>
+            <div className="email-section">
+              <h2>📧 Email</h2>
+              <p className="email-address">ryanj[dot]morrissey@gmail.com</p>
+              <p className="email-note">(Because spam bots can&apos;t handle the dot notation 🤖)</p>
             </div>
           </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="app-layout">
+      {/* Fixed Sidebar Navigation */}
+      <nav className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo-section">
+            <span className="terminal-prompt">ryan@dev:~$</span>
+          </div>
+          
+          {/* Theme Toggle */}
+          <button className="theme-toggle-sidebar" onClick={toggleTheme}>
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
         </div>
-      </section>
+
+        <div className="nav-section">
+          <div className="nav-title">Navigation</div>
+          {navigationItems.map((item) => (
+            <button
+              key={item.id}
+              className={`nav-item ${activeSection === item.id ? 'active' : ''} ${isLoading ? 'disabled' : ''}`}
+              onClick={() => switchSection(item.id)}
+              disabled={isLoading}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <div className="nav-content">
+                <span className="nav-label">{item.label}</span>
+                <span className="nav-desc">{item.description}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="sidebar-footer">
+          <div className="system-info">
+            <div className="info-line">System: ReactOS</div>
+            <div className="info-line">Uptime: {new Date().toLocaleTimeString()}</div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area */}
+      <main className="main-content">
+        {renderContent()}
+      </main>
     </div>
   );
 }
