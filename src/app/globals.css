@@ -23,8 +23,8 @@
   --color-accent-purple: var(--accent-purple);
   --color-border-light: var(--border-light);
   --color-text-secondary: var(--text-secondary);
-  --font-sans: var(--font-dotgothic16);
-  --font-mono: var(--font-dotgothic16);
+  --font-sans: var(--font-pixelify-sans);
+  --font-mono: var(--font-pixelify-sans);
 }
 
 /* Remove prefers-color-scheme to use manual toggle only */

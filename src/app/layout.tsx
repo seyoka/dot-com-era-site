@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { DotGothic16 } from "next/font/google";
+import { Pixelify_Sans } from "next/font/google";
 import "./globals.css";
 
-const dotGothic16 = DotGothic16({
-  weight: "400",
+const pixelifySans = Pixelify_Sans({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-dotgothic16",
+  variable: "--font-pixelify-sans",
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dotGothic16.variable} ${dotGothic16.className} antialiased`}>
+      <body className={`${pixelifySans.variable} ${pixelifySans.className} antialiased`}>
         {children}
       </body>
     </html>
