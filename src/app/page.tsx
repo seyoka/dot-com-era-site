@@ -265,7 +265,7 @@ export default function Home() {
               <div className="flex items-start gap-4">
                 <div className="w-16 h-20 border-2 border-foreground overflow-hidden bg-background">
                   <Image
-                    src="/books/pragmatic-programmer.jpg"
+                    src="/thebigshort.png"
                     alt="The Pragmatic Programmer book cover"
                     width={64}
                     height={80}
@@ -273,8 +273,8 @@ export default function Home() {
                   />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-lg font-bold text-foreground mb-2">The Pragmatic Programmer</h4>
-                  <p className="text-text-secondary mb-2">David Thomas & Andrew Hunt</p>
+                  <h4 className="text-lg font-bold text-foreground mb-2">The Big Short</h4>
+                  <p className="text-text-secondary mb-2">Micheal Lewis</p>
                   <div className="flex items-center gap-4">
                     <div className="flex-1">
                       <div className="w-full h-3 border-2 border-foreground bg-background relative">
@@ -299,7 +299,7 @@ export default function Home() {
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
                     <Image
-                      src="/books/clean-architecture.jpg"
+                      src="/cleanarchitecture.png"
                       alt="Clean Architecture book cover"
                       width={48}
                       height={64}
@@ -323,7 +323,7 @@ export default function Home() {
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
                     <Image
-                      src="/books/zero-to-one.jpg"
+                      src="/zerotoone.png"
                       alt="Zero to One book cover"
                       width={48}
                       height={64}
@@ -347,7 +347,7 @@ export default function Home() {
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
                     <Image
-                      src="/books/ddia.jpg"
+                      src="/datainstense.png"
                       alt="Designing Data-Intensive Applications book cover"
                       width={48}
                       height={64}
