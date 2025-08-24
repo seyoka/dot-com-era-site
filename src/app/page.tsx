@@ -138,10 +138,13 @@ export default function Home() {
         </p>
         <div className="border-t-2 border-border-light mt-8 pt-8">
           <h2 className="text-2xl font-bold mb-6 text-foreground">
-            About, builder, founder, engineer.
+            About
           </h2>
           <p className="text-base text-text-secondary mb-4 leading-relaxed">
-            Hey I&apos;m Ryan, welcome to my personal site! Here is all things about me :)
+            Hey I&apos;m Ryan, welcome to my personal site! Im a 19 year old Software Engineer from Limerick. I currently live in Dublin, but I often visit San Francisco. I love reading, running, watching tv shows and playing games and interested in friends for the afforementioned things.
+            <br />
+            <br />
+            Feel free to reach out, all emails are welcome :)
           </p>
           <p className="text-base text-accent-blue">
             Site best viewed in Netscape Navigator.
