@@ -1,103 +1,103 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="max-w-4xl mx-auto px-6 py-12">
+      {/* Header */}
+      <header className="mb-16">
+        <h1 className="text-5xl font-bold mb-4 text-foreground">
+          Ryan Morrissey
+        </h1>
+        <p className="text-xl text-accent-blue mb-2">
+          Software is eating the world!
+        </p>
+        <div className="border-t-2 border-border-light mt-8 pt-8">
+          <h2 className="text-2xl font-bold mb-6 text-foreground">
+            About, builder, founder, engineer.
+          </h2>
+          <p className="text-base text-text-secondary mb-4 leading-relaxed">
+            Im the co-founder of Solara. Previously, I led engineering at
+            Radiant AI. I enjoy working on both the frontend and backend.
+            Based in New York, NY.
+          </p>
+          <p className="text-base text-accent-blue">
+            Site best viewed in Netscape Navigator.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </header>
+
+      {/* Work Section */}
+      <section className="mb-16">
+        <div className="section-divider pt-8">
+          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Work</h2>
+
+          <div className="space-y-6">
+            <div className="flex items-start gap-4 work-item">
+              <div className="work-icon w-12 h-12 bg-accent-blue border-2 border-foreground flex items-center justify-center text-background font-bold">
+                S
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-foreground">Solara</h3>
+                  <span className="text-sm text-text-secondary">→</span>
+                </div>
+                <p className="text-text-secondary">Solar energy platform</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 work-item">
+              <div className="work-icon w-12 h-12 bg-text-secondary border-2 border-foreground flex items-center justify-center text-background font-bold">
+                D
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-foreground">DeckHub</h3>
+                  <span className="text-sm text-text-secondary">→</span>
+                </div>
+                <p className="text-text-secondary">Presentation software</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 work-item">
+              <div className="work-icon w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
+                S
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-foreground">SentryBot</h3>
+                  <span className="text-sm text-text-secondary">→</span>
+                </div>
+                <p className="text-text-secondary">Automation tool</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section className="mb-16">
+        <div className="section-divider pt-8">
+          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Projects</h2>
+          <div className="pixel-border bg-border-light p-6">
+            <p className="text-text-secondary text-center ascii-decoration">
+              Coming soon... Check back later for updates!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Reading Section */}
+      <section className="mb-16">
+        <div className="section-divider pt-8">
+          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Reading</h2>
+          <div className="space-y-4">
+            <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4">
+              <h3 className="text-base font-bold text-foreground mb-1">
+                Tools and Text Editors
+              </h3>
+              <p className="text-sm text-text-secondary">April 8, 2024</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
