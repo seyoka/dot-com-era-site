@@ -156,6 +156,62 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Contact Section */}
+      <section className="mb-16">
+        <div className="section-divider pt-8">
+          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Contact</h2>
+          
+          <div className="pixel-border bg-background p-8">
+            <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
+              
+              {/* LinkedIn */}
+              <div className="flex items-center gap-4 work-item">
+                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                  <img
+                    src="/linkedin.png"
+                    alt="LinkedIn"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">LinkedIn</h3>
+                  <p className="text-text-secondary text-sm">Professional network</p>
+                </div>
+              </div>
+
+              {/* GitHub */}
+              <div className="flex items-center gap-4 work-item">
+                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
+                  <img
+                    src="/github.png"
+                    alt="GitHub"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-foreground">GitHub</h3>
+                  <p className="text-text-secondary text-sm">Code repositories</p>
+                </div>
+              </div>
+
+            </div>
+            
+            {/* Email */}
+            <div className="mt-8 text-center">
+              <div className="inline-block pixel-border bg-border-light p-4">
+                <h3 className="text-lg font-bold text-foreground mb-2">📧 Email</h3>
+                <p className="text-accent-blue font-mono text-sm">
+                  ryanj[dot]morrissey@gmail.com
+                </p>
+                <p className="text-xs text-text-secondary mt-2">
+                  (Because spam bots can't handle the dot notation 🤖)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
