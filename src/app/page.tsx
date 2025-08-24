@@ -6,6 +6,8 @@ import Image from "next/image";
 export default function Home() {
   const [theme, setTheme] = useState("light");
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
+  const [priceChange, setPriceChange] = useState<number | null>(null);
 
   // Sound effect functions
   const playBeep = useCallback((frequency: number, duration: number) => {
@@ -39,13 +41,31 @@ export default function Home() {
     setTimeout(() => playBeep(800, 0.1), 100);
   }, [playBeep]);
 
+  // Fetch Bitcoin price
+  const fetchBitcoinPrice = useCallback(async () => {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+      const data = await response.json();
+      setBitcoinPrice(data.bitcoin.usd);
+      setPriceChange(data.bitcoin.usd_24h_change);
+    } catch (error) {
+      console.log('Failed to fetch Bitcoin price:', error);
+    }
+  }, []);
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     const savedSound = localStorage.getItem("soundEnabled") === "true";
     setTheme(savedTheme);
     setSoundEnabled(savedSound);
     document.documentElement.setAttribute("data-theme", savedTheme);
-  }, []);
+
+    // Fetch Bitcoin price on load and every 30 seconds
+    fetchBitcoinPrice();
+    const priceInterval = setInterval(fetchBitcoinPrice, 30000);
+
+    return () => clearInterval(priceInterval);
+  }, [fetchBitcoinPrice]);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -78,6 +98,36 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Bitcoin Ticker */}
+      <div className="mb-8 crypto-ticker p-3">
+        <div className="flex items-center gap-4 relative z-10">
+          <div className="text-xs font-mono text-foreground font-bold">
+            💰 LIVE CRYPTO:
+          </div>
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <span className="bitcoin-icon">₿ BTC</span>
+            {bitcoinPrice ? (
+              <>
+                <span className="text-foreground font-bold">
+                  ${bitcoinPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+                {priceChange !== null && (
+                  <span className={`font-bold ${priceChange >= 0 ? 'price-change-positive' : 'price-change-negative'}`}>
+                    {priceChange >= 0 ? '▲' : '▼'} {Math.abs(priceChange).toFixed(2)}%
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="text-text-secondary">Loading...</span>
+            )}
+            <div className="ticker-cursor text-accent-blue font-bold">█</div>
+            <div className="text-text-secondary text-xs">
+              • Updated every 30s
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="mb-16">
         <h1 className="text-5xl font-bold mb-4 text-foreground">
@@ -139,7 +189,7 @@ export default function Home() {
                   <h3 className="text-lg font-bold text-foreground">Induct</h3>
                   <span className="text-sm text-text-secondary">→</span>
                 </div>
-                <p className="text-text-secondary">Co-Founder</p>
+                <p className="text-text-secondary">Prev Founded</p>
               </div>
             </div>
 
@@ -207,12 +257,160 @@ export default function Home() {
       <section className="mb-16">
         <div className="section-divider pt-8">
           <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Reading</h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4">
-              <h3 className="text-base font-bold text-foreground mb-1">
-                Tools and Text Editors
-              </h3>
-              <p className="text-sm text-text-secondary">April 8, 2024</p>
+
+          {/* Currently Reading */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Currently Reading</h3>
+            <div className="pixel-border bg-background p-6 relative">
+              <div className="flex items-start gap-4">
+                <div className="w-16 h-20 border-2 border-foreground overflow-hidden bg-background">
+                  <Image
+                    src="/books/pragmatic-programmer.jpg"
+                    alt="The Pragmatic Programmer book cover"
+                    width={64}
+                    height={80}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-lg font-bold text-foreground mb-2">The Pragmatic Programmer</h4>
+                  <p className="text-text-secondary mb-2">David Thomas & Andrew Hunt</p>
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="w-full h-3 border-2 border-foreground bg-background relative">
+                        <div className="h-full bg-accent-blue" style={{ width: '67%' }}></div>
+                      </div>
+                      <p className="text-xs text-text-secondary mt-1">67% complete</p>
+                    </div>
+                    <div className="text-xs text-accent-blue font-mono">
+                      ████████████▓▓▓▓▓
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Reading List */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Reading List</h3>
+            <div className="space-y-4">
+              <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
+                    <Image
+                      src="/books/clean-architecture.jpg"
+                      alt="Clean Architecture book cover"
+                      width={48}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-bold text-foreground mb-1">
+                      Clean Architecture
+                    </h4>
+                    <p className="text-sm text-text-secondary mb-1">Robert C. Martin</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
+                      <span className="text-xs text-text-secondary">⭐ 4.2/5</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-l-4 border-accent-purple pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
+                    <Image
+                      src="/books/zero-to-one.jpg"
+                      alt="Zero to One book cover"
+                      width={48}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-bold text-foreground mb-1">
+                      Zero to One
+                    </h4>
+                    <p className="text-sm text-text-secondary mb-1">Peter Thiel</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs bg-accent-blue text-background px-2 py-1 font-bold">BUSINESS</span>
+                      <span className="text-xs text-text-secondary">⭐ 4.1/5</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
+                    <Image
+                      src="/books/ddia.jpg"
+                      alt="Designing Data-Intensive Applications book cover"
+                      width={48}
+                      height={64}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-base font-bold text-foreground mb-1">
+                      Designing Data-Intensive Applications
+                    </h4>
+                    <p className="text-sm text-text-secondary mb-1">Martin Kleppmann</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
+                      <span className="text-xs text-text-secondary">⭐ 4.7/5</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recently Finished */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Recently Finished</h3>
+            <div className="space-y-4">
+              <div className="border-l-4 border-border-light pl-4 pixel-border bg-border-light p-4 opacity-80">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="text-base font-bold text-foreground mb-1">
+                      Tools and Text Editors ✓
+                    </h4>
+                    <p className="text-sm text-text-secondary mb-1">Various Authors</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs bg-foreground text-background px-2 py-1 font-bold">COMPLETED</span>
+                      <span className="text-xs text-text-secondary">April 8, 2024</span>
+                    </div>
+                  </div>
+                  <div className="text-accent-blue">✓</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Reading Stats */}
+          <div className="pixel-border bg-background p-6">
+            <h3 className="text-lg font-bold mb-4 text-foreground text-center">📊 Reading Stats</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="pixel-border bg-border-light p-3">
+                <div className="text-2xl font-bold text-accent-blue">12</div>
+                <div className="text-xs text-text-secondary">Books This Year</div>
+              </div>
+              <div className="pixel-border bg-border-light p-3">
+                <div className="text-2xl font-bold text-accent-purple">67%</div>
+                <div className="text-xs text-text-secondary">Current Progress</div>
+              </div>
+              <div className="pixel-border bg-border-light p-3">
+                <div className="text-2xl font-bold text-foreground">3</div>
+                <div className="text-xs text-text-secondary">Books/Month Avg</div>
+              </div>
+              <div className="pixel-border bg-border-light p-3">
+                <div className="text-2xl font-bold text-accent-blue">🔥</div>
+                <div className="text-xs text-text-secondary">7 Day Streak</div>
+              </div>
             </div>
           </div>
         </div>
