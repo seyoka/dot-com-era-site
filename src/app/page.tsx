@@ -1,48 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
-  const [soundEnabled, setSoundEnabled] = useState(false);
-
-  // Sound effect functions
-  const playBeep = useCallback((frequency: number, duration: number) => {
-    if (!soundEnabled) return;
-
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = frequency;
-      oscillator.type = 'square'; // Retro square wave sound
-
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + duration);
-    } catch (error) {
-      console.log('Audio not supported');
-    }
-  }, [soundEnabled]);
-
-  const playHoverSound = useCallback(() => playBeep(800, 0.1), [playBeep]);
-  const playClickSound = useCallback(() => playBeep(400, 0.15), [playBeep]);
-  const playToggleSound = useCallback(() => {
-    playBeep(600, 0.1);
-    setTimeout(() => playBeep(800, 0.1), 100);
-  }, [playBeep]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
-    const savedSound = localStorage.getItem("soundEnabled") === "true";
     setTheme(savedTheme);
-    setSoundEnabled(savedSound);
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
@@ -87,7 +53,7 @@ export default function Home() {
             About, builder, founder, engineer.
           </h2>
           <p className="text-base text-text-secondary mb-4 leading-relaxed">
-            Hey Im Ryan, welcome to my personal site! Here is all things about me :)
+            Hey I&apos;m Ryan, welcome to my personal site! Here is all things about me :)
           </p>
           <p className="text-base text-accent-blue">
             Site best viewed in Netscape Navigator.
@@ -103,9 +69,11 @@ export default function Home() {
           <div className="space-y-6">
             <div className="flex items-start gap-4 work-item">
               <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <img
+                <Image
                   src="/pxArt.png"
                   alt="Stripe logo"
+                  width={48}
+                  height={48}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -120,9 +88,11 @@ export default function Home() {
 
             <div className="flex items-start gap-4 work-item">
               <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <img
+                <Image
                   src="/pxArt (1).png"
                   alt="Induct logo"
+                  width={48}
+                  height={48}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -221,9 +191,11 @@ export default function Home() {
               {/* LinkedIn */}
               <div className="flex items-center gap-4 work-item">
                 <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                  <img
+                  <Image
                     src="/linkedin.png"
                     alt="LinkedIn"
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -236,9 +208,11 @@ export default function Home() {
               {/* GitHub */}
               <div className="flex items-center gap-4 work-item">
                 <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                  <img
+                  <Image
                     src="/github.png"
                     alt="GitHub"
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -258,7 +232,7 @@ export default function Home() {
                   ryanj[dot]morrissey@gmail.com
                 </p>
                 <p className="text-xs text-text-secondary mt-2">
-                  (Because spam bots can't handle the dot notation 🤖)
+                  (Because spam bots can&apos;t handle the dot notation 🤖)
                 </p>
               </div>
             </div>
