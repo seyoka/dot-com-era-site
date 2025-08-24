@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DotGothic16 } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const dotGothic16 = DotGothic16({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dotgothic16",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={`${dotGothic16.variable} ${dotGothic16.className} antialiased`}>
         {children}
       </body>
     </html>
