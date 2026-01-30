@@ -93,10 +93,10 @@ export default function Home() {
       <div className="mb-8 crypto-ticker p-3">
         <div className="flex items-center gap-4 relative z-10">
           <div className="text-xs font-mono text-foreground font-bold">
-            💰 LIVE CRYPTO:
+            LIVE CRYPTO:
           </div>
           <div className="flex items-center gap-3 text-xs font-mono">
-            <span className="bitcoin-icon">₿ BTC</span>
+            <span className="bitcoin-icon">BTC</span>
             {bitcoinPrice ? (
               <>
                 <span className="text-foreground font-bold">
@@ -310,7 +310,7 @@ export default function Home() {
             <div className="pixel-border bg-background p-6 work-item">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-foreground border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
-                  🌐
+                  WWW
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
@@ -392,7 +392,7 @@ export default function Home() {
                     <p className="text-sm text-text-secondary mb-1">Robert C. Martin</p>
                     <div className="flex items-center gap-2">
                       <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
-                      <span className="text-xs text-text-secondary">⭐ 4.2/5</span>
+                      <span className="text-xs text-text-secondary">★ 4.2/5</span>
                     </div>
                   </div>
                 </div>
@@ -416,7 +416,7 @@ export default function Home() {
                     <p className="text-sm text-text-secondary mb-1">Peter Thiel</p>
                     <div className="flex items-center gap-2">
                       <span className="text-xs bg-accent-blue text-background px-2 py-1 font-bold">BUSINESS</span>
-                      <span className="text-xs text-text-secondary">⭐ 4.1/5</span>
+                      <span className="text-xs text-text-secondary">★ 4.1/5</span>
                     </div>
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export default function Home() {
                     <p className="text-sm text-text-secondary mb-1">Martin Kleppmann</p>
                     <div className="flex items-center gap-2">
                       <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
-                      <span className="text-xs text-text-secondary">⭐ 4.7/5</span>
+                      <span className="text-xs text-text-secondary">★ 4.7/5</span>
                     </div>
                   </div>
                 </div>
@@ -456,7 +456,7 @@ export default function Home() {
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="text-base font-bold text-foreground mb-1">
-                      Tools and Text Editors ✓
+                      Tools and Text Editors [x]
                     </h4>
                     <p className="text-sm text-text-secondary mb-1">Various Authors</p>
                     <div className="flex items-center gap-2">
@@ -464,7 +464,7 @@ export default function Home() {
                       <span className="text-xs text-text-secondary">April 8, 2024</span>
                     </div>
                   </div>
-                  <div className="text-accent-blue">✓</div>
+                  <div className="text-accent-blue">[x]</div>
                 </div>
               </div>
             </div>
@@ -472,7 +472,7 @@ export default function Home() {
 
           {/* Reading Stats */}
           <div className="pixel-border bg-background p-6">
-            <h3 className="text-lg font-bold mb-4 text-foreground text-center">📊 Reading Stats</h3>
+            <h3 className="text-lg font-bold mb-4 text-foreground text-center">Reading Stats</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div className="pixel-border bg-border-light p-3">
                 <div className="text-2xl font-bold text-accent-blue">12</div>
@@ -487,7 +487,7 @@ export default function Home() {
                 <div className="text-xs text-text-secondary">Books/Month Avg</div>
               </div>
               <div className="pixel-border bg-border-light p-3">
-                <div className="text-2xl font-bold text-accent-blue">🔥</div>
+                <div className="text-2xl font-bold text-accent-blue">FIRE</div>
                 <div className="text-xs text-text-secondary">7 Day Streak</div>
               </div>
             </div>
@@ -542,12 +542,12 @@ export default function Home() {
             {/* Email */}
             <div className="mt-8 text-center">
               <div className="inline-block pixel-border bg-border-light p-4">
-                <h3 className="text-lg font-bold text-foreground mb-2">📧 Email</h3>
+                <h3 className="text-lg font-bold text-foreground mb-2">Email</h3>
                 <p className="text-accent-blue font-mono text-sm">
                   ryanj[dot]morrissey@gmail.com
                 </p>
                 <p className="text-xs text-text-secondary mt-2">
-                  (Because spam bots can&apos;t handle the dot notation 🤖)
+                  (Because spam bots can&apos;t handle the dot notation )
                 </p>
               </div>
             </div>
