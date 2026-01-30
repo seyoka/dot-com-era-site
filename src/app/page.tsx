@@ -86,7 +86,7 @@ export default function Home() {
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         >
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+          {theme === "light" ? "[ Dark ]" : "[ Light ]"}
         </button>
       </div>
       {/* Bitcoin Ticker */}
@@ -215,22 +215,28 @@ export default function Home() {
 
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {[
-              { name: "TypeScript", icon: "TS", color: "bg-accent-blue" },
-              { name: "React", icon: "⚛️", color: "bg-accent-blue" },
-              { name: "Next.js", icon: "N", color: "bg-foreground" },
-              { name: "Convex", icon: "◈", color: "bg-accent-purple" },
-              { name: "Tailwind", icon: "🎨", color: "bg-accent-blue" },
-              { name: "Node.js", icon: "⬢", color: "bg-accent-blue" },
-              { name: "Python", icon: "🐍", color: "bg-accent-purple" },
-              { name: "ethers.js", icon: "Ξ", color: "bg-accent-purple" },
-              { name: "Postgres", icon: "🐘", color: "bg-accent-blue" },
-              { name: "Docker", icon: "🐳", color: "bg-accent-blue" },
-              { name: "Git", icon: "⎇", color: "bg-foreground" },
-              { name: "Fly.io", icon: "✈", color: "bg-accent-purple" },
+              { name: "TypeScript", img: "/tech-icons/typescript.png" },
+              { name: "React", img: "/tech-icons/react.png" },
+              { name: "Next.js", img: "/tech-icons/nextjs.png" },
+              { name: "Convex", img: "/tech-icons/convex.png" },
+              { name: "Tailwind", img: "/tech-icons/tailwindcss.png" },
+              { name: "Node.js", img: "/tech-icons/nodejs.png" },
+              { name: "Python", img: "/tech-icons/python.png" },
+              { name: "ethers.js", img: "/tech-icons/ethereum.png" },
+              { name: "Postgres", img: "/tech-icons/postgresql.png" },
+              { name: "Docker", img: "/tech-icons/docker.png" },
+              { name: "Git", img: "/tech-icons/git.png" },
+              { name: "Fly.io", img: "/tech-icons/flyio.png" },
             ].map((tech, i) => (
               <div key={i} className="flex flex-col items-center gap-2 p-3 pixel-border bg-background hover:bg-border-light transition-all duration-100 cursor-pointer group work-item">
-                <div className={`w-10 h-10 ${tech.color} border-2 border-foreground flex items-center justify-center text-background text-sm font-bold`}>
-                  {tech.icon}
+                <div className="w-10 h-10 border-2 border-foreground overflow-hidden">
+                  <Image
+                    src={tech.img}
+                    alt={tech.name}
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <span className="text-xs text-text-secondary text-center group-hover:text-foreground font-bold">
                   {tech.name}
@@ -242,7 +248,7 @@ export default function Home() {
           <div className="mt-6 p-4 pixel-border bg-border-light">
             <h3 className="text-sm font-bold text-foreground mb-2">Currently Learning</h3>
             <p className="text-sm text-text-secondary">
-              🎯 Quantitative trading • Rust • System design at scale
+              Quantitative trading | Rust | System design at scale
             </p>
           </div>
         </div>
