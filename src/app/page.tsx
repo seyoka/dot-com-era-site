@@ -5,43 +5,9 @@ import Image from "next/image";
 
 export default function Home() {
   const [theme, setTheme] = useState("light");
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [bitcoinPrice, setBitcoinPrice] = useState<number | null>(null);
   const [priceChange, setPriceChange] = useState<number | null>(null);
 
-  // Sound effect functions
-  const playBeep = useCallback((frequency: number, duration: number) => {
-    if (!soundEnabled) return;
-
-    try {
-      const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      const audioContext = new AudioContextClass();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = frequency;
-      oscillator.type = 'square'; // Retro square wave sound
-
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + duration);
-    } catch {
-      console.log('Audio not supported');
-    }
-  }, [soundEnabled]);
-
-  // Removed unused sound functions
-  const playToggleSound = useCallback(() => {
-    playBeep(600, 0.1);
-    setTimeout(() => playBeep(800, 0.1), 100);
-  }, [playBeep]);
-
-  // Fetch Bitcoin price
   const fetchBitcoinPrice = useCallback(async () => {
     try {
       const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
@@ -55,15 +21,10 @@ export default function Home() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
-    const savedSound = localStorage.getItem("soundEnabled") === "true";
     setTheme(savedTheme);
-    setSoundEnabled(savedSound);
     document.documentElement.setAttribute("data-theme", savedTheme);
-
-    // Fetch Bitcoin price on load and every 30 seconds
     fetchBitcoinPrice();
     const priceInterval = setInterval(fetchBitcoinPrice, 30000);
-
     return () => clearInterval(priceInterval);
   }, [fetchBitcoinPrice]);
 
@@ -72,488 +33,363 @@ export default function Home() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
-    playToggleSound();
   };
 
-  // Removed unused toggleSound function
-
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Theme Toggle Button */}
+    <div className="min-h-screen p-4 md:p-8">
+      {/* Theme Toggle */}
       <div className="theme-toggle-container">
-        <button
-          className="btn-retro theme-btn"
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-        >
-          {theme === "light" ? "[ Dark ]" : "[ Light ]"}
+        <button className="btn-aqua" onClick={toggleTheme}>
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
         </button>
       </div>
-      {/* Bitcoin Ticker */}
-      <div className="mb-8 crypto-ticker p-3">
-        <div className="flex items-center gap-4 relative z-10">
-          <div className="text-xs font-mono text-foreground font-bold">
-            LIVE CRYPTO:
+
+      {/* Main Container */}
+      <div className="max-w-3xl mx-auto">
+        
+        {/* Header Window */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Welcome</span>
           </div>
-          <div className="flex items-center gap-3 text-xs font-mono">
-            <span className="bitcoin-icon">BTC</span>
-            {bitcoinPrice ? (
-              <>
-                <span className="text-foreground font-bold">
-                  ${bitcoinPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </span>
-                {priceChange !== null && (
-                  <span className={`font-bold ${priceChange >= 0 ? 'price-change-positive' : 'price-change-negative'}`}>
-                    {priceChange >= 0 ? '▲' : '▼'} {Math.abs(priceChange).toFixed(2)}%
-                  </span>
-                )}
-              </>
-            ) : (
-              <span className="text-text-secondary">Loading...</span>
-            )}
-            <div className="ticker-cursor text-accent-blue font-bold">█</div>
-            <div className="text-text-secondary text-xs">
-              • Updated every 30s
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Header */}
-      <header className="mb-16">
-        <h1 className="text-5xl font-bold mb-4 text-foreground">
-          Ryan Morrissey
-        </h1>
-        <p className="text-xl text-accent-blue mb-2">
-          Software is eating the world!
-        </p>
-        <div className="border-t-2 border-border-light mt-8 pt-8">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">
-            About
-          </h2>
-          <p className="text-base text-text-secondary mb-4 leading-relaxed">
-            Hey I&apos;m Ryan, welcome to my personal site! Im a 19 year old Software Engineer from Limerick. I currently live in Dublin, but I often visit San Francisco. I love reading, running, watching tv shows and playing games and interested in friends for the afforementioned things.
-            <br />
-            <br />
-            Feel free to reach out, all emails are welcome :)
-          </p>
-          <p className="text-base text-accent-blue">
-            Site best viewed in Netscape Navigator.
-          </p>
-        </div>
-      </header>
-
-      {/* Work Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Work</h2>
-
-          <div className="space-y-6">
-            <div className="flex items-start gap-4 work-item">
-              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <Image
-                  src="/pxArt.png"
-                  alt="Stripe logo"
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Stripe</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Software Engineering Intern</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 work-item">
-              <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                <Image
-                  src="/pxArt (1).png"
-                  alt="Induct logo"
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-foreground">Induct</h3>
-                  <span className="text-sm text-text-secondary">→</span>
-                </div>
-                <p className="text-text-secondary">Prev Founded</p>
-              </div>
-            </div>
-
-            {/* Education Subsection */}
-            <div className="section-divider pt-8">
-              <h3 className="text-xl font-bold mb-6 text-foreground">Education</h3>
-
-              <div className="flex items-start gap-4 work-item">
-                <div className="w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold">
-                  UL
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-bold text-foreground">University of Limerick</h4>
-                    <span className="text-sm text-text-secondary">→</span>
-                  </div>
-                  <p className="text-text-secondary">BSc in Immersive Software Engineering</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Skills/Tech Stack Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Skills & Tech Stack</h2>
-
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            {[
-              { name: "TypeScript", img: "/tech-icons/typescript.png" },
-              { name: "React", img: "/tech-icons/react.png" },
-              { name: "Next.js", img: "/tech-icons/nextjs.png" },
-              { name: "Convex", img: "/tech-icons/convex.png" },
-              { name: "Tailwind", img: "/tech-icons/tailwindcss.png" },
-              { name: "Node.js", img: "/tech-icons/nodejs.png" },
-              { name: "Python", img: "/tech-icons/python.png" },
-              { name: "ethers.js", img: "/tech-icons/ethereum.png" },
-              { name: "Postgres", img: "/tech-icons/postgresql.png" },
-              { name: "Docker", img: "/tech-icons/docker.png" },
-              { name: "Git", img: "/tech-icons/git.png" },
-              { name: "Fly.io", img: "/tech-icons/flyio.png" },
-            ].map((tech, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-3 pixel-border bg-background hover:bg-border-light transition-all duration-100 cursor-pointer group work-item">
-                <div className="w-10 h-10 border-2 border-foreground overflow-hidden">
-                  <Image
-                    src={tech.img}
-                    alt={tech.name}
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="text-xs text-text-secondary text-center group-hover:text-foreground font-bold">
-                  {tech.name}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 p-4 pixel-border bg-border-light">
-            <h3 className="text-sm font-bold text-foreground mb-2">Currently Learning</h3>
-            <p className="text-sm text-text-secondary">
-              Quantitative trading | Rust | System design at scale
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-2">Ryan Morrissey</h1>
+            <p className="text-accent-blue font-medium mb-4">Software is eating the world!</p>
+            <hr className="divider-classic" />
+            <p className="text-text-secondary leading-relaxed">
+              Hey I&apos;m Ryan, welcome to my personal site! Im a 19 year old Software Engineer from Limerick. 
+              I currently live in Dublin, but I often visit San Francisco. I love reading, running, watching 
+              tv shows and playing games and interested in friends for the afforementioned things.
+            </p>
+            <p className="text-text-secondary mt-4">
+              Feel free to reach out, all emails are welcome :)
+            </p>
+            <p className="text-xs text-text-secondary mt-4 italic">
+              Site best viewed in Netscape Navigator 4.0 or Internet Explorer 5.0
             </p>
           </div>
         </div>
-      </section>
 
-      {/* Projects Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Projects</h2>
-          
-          <div className="space-y-6">
-            {/* Carbon Copy */}
-            <div className="pixel-border bg-background p-6 work-item">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
-                  CC
+        {/* Ticker Bar */}
+        <div className="ticker-bar p-2 mb-6 flex items-center gap-4">
+          <span className="font-bold">LIVE:</span>
+          <span>BTC</span>
+          {bitcoinPrice ? (
+            <>
+              <span className="font-bold">${bitcoinPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              {priceChange !== null && (
+                <span className={priceChange >= 0 ? 'text-green-600' : 'text-red-600'}>
+                  ({priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%)
+                </span>
+              )}
+            </>
+          ) : (
+            <span>Loading...</span>
+          )}
+          <span className="text-text-secondary ml-auto text-xs">Updates every 30s</span>
+        </div>
+
+        {/* Work & Education */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Experience</span>
+          </div>
+          <div className="p-4">
+            <h2 className="section-header">Work</h2>
+            
+            <div className="work-item item-hover">
+              <div className="work-icon">
+                <Image src="/pxArt.png" alt="Stripe" width={40} height={40} />
+              </div>
+              <div>
+                <div className="font-bold">Stripe</div>
+                <div className="text-sm text-text-secondary">Software Engineering Intern</div>
+              </div>
+            </div>
+
+            <div className="work-item item-hover">
+              <div className="work-icon">
+                <Image src="/pxArt (1).png" alt="Induct" width={40} height={40} />
+              </div>
+              <div>
+                <div className="font-bold">Induct</div>
+                <div className="text-sm text-text-secondary">Prev Founded</div>
+              </div>
+            </div>
+
+            <h2 className="section-header mt-6">Education</h2>
+            
+            <div className="work-item item-hover">
+              <div className="work-icon bg-accent-purple text-white font-bold text-sm">
+                UL
+              </div>
+              <div>
+                <div className="font-bold">University of Limerick</div>
+                <div className="text-sm text-text-secondary">BSc in Immersive Software Engineering</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Skills & Tech Stack */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Skills</span>
+          </div>
+          <div className="p-4">
+            <h2 className="section-header">Tech Stack</h2>
+            
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-4">
+              {[
+                { name: "TypeScript", img: "/tech-icons/typescript.png" },
+                { name: "React", img: "/tech-icons/react.png" },
+                { name: "Next.js", img: "/tech-icons/nextjs.png" },
+                { name: "Convex", img: "/tech-icons/convex.png" },
+                { name: "Tailwind", img: "/tech-icons/tailwindcss.png" },
+                { name: "Node.js", img: "/tech-icons/nodejs.png" },
+                { name: "Python", img: "/tech-icons/python.png" },
+                { name: "ethers.js", img: "/tech-icons/ethereum.png" },
+                { name: "Postgres", img: "/tech-icons/postgresql.png" },
+                { name: "Docker", img: "/tech-icons/docker.png" },
+                { name: "Git", img: "/tech-icons/git.png" },
+                { name: "Fly.io", img: "/tech-icons/flyio.png" },
+              ].map((tech, i) => (
+                <div key={i} className="tech-icon-item">
+                  <Image src={tech.img} alt={tech.name} width={32} height={32} />
+                  <span className="text-xs text-text-secondary">{tech.name}</span>
                 </div>
+              ))}
+            </div>
+
+            <div className="field-inset">
+              <div className="text-xs font-bold mb-1">Currently Learning:</div>
+              <div className="text-xs text-text-secondary">
+                Quantitative trading | Rust | System design at scale
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Projects */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Projects</span>
+          </div>
+          <div className="p-4">
+            <h2 className="section-header">Current Projects</h2>
+            
+            <div className="project-card item-hover">
+              <div className="flex items-start gap-3">
+                <div className="work-icon bg-accent-purple text-white font-bold">CC</div>
                 <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-bold text-foreground">Carbon Copy</h3>
-                    <span className="text-xs bg-accent-blue text-background px-2 py-1 font-bold">ACTIVE</span>
+                  <div className="flex items-center gap-2">
+                    <span className="project-title">Carbon Copy</span>
+                    <span className="tag-classic bg-accent-blue text-white">ACTIVE</span>
                   </div>
-                  <p className="text-text-secondary text-sm mb-3">
-                    Copy trading platform for prediction markets. Follow top traders and automatically mirror their positions on Polymarket.
+                  <p className="project-desc">
+                    Copy trading platform for prediction markets. Follow top traders and automatically 
+                    mirror their positions on Polymarket.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs border border-foreground px-2 py-1">Next.js</span>
-                    <span className="text-xs border border-foreground px-2 py-1">Convex</span>
-                    <span className="text-xs border border-foreground px-2 py-1">Polymarket API</span>
-                    <span className="text-xs border border-foreground px-2 py-1">ethers.js</span>
+                  <div className="project-tags">
+                    <span className="tag-classic">Next.js</span>
+                    <span className="tag-classic">Convex</span>
+                    <span className="tag-classic">Polymarket API</span>
+                    <span className="tag-classic">ethers.js</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Time Tracking Tool */}
-            <div className="pixel-border bg-background p-6 work-item">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-accent-blue border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
-                  ⏱
-                </div>
+            <div className="project-card item-hover">
+              <div className="flex items-start gap-3">
+                <div className="work-icon bg-accent-blue text-white font-bold text-lg">T</div>
                 <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-bold text-foreground">Time Tracking Tool</h3>
-                    <span className="text-xs bg-border-light text-foreground px-2 py-1 font-bold border border-foreground">SHIPPED</span>
+                  <div className="flex items-center gap-2">
+                    <span className="project-title">Time Tracking Tool</span>
+                    <span className="tag-classic">SHIPPED</span>
                   </div>
-                  <p className="text-text-secondary text-sm mb-3">
-                    Simple tool for tracking time spent on projects and tasks. Built because existing tools were too bloated.
+                  <p className="project-desc">
+                    Simple tool for tracking time spent on projects and tasks. Built because existing 
+                    tools were too bloated.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs border border-foreground px-2 py-1">React</span>
-                    <span className="text-xs border border-foreground px-2 py-1">Node.js</span>
+                  <div className="project-tags">
+                    <span className="tag-classic">React</span>
+                    <span className="tag-classic">Node.js</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* This Site */}
-            <div className="pixel-border bg-background p-6 work-item">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-foreground border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
-                  WWW
-                </div>
+            <div className="project-card item-hover">
+              <div className="flex items-start gap-3">
+                <div className="work-icon bg-foreground text-background font-bold">W</div>
                 <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-bold text-foreground">This Website</h3>
-                    <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">META</span>
+                  <div className="flex items-center gap-2">
+                    <span className="project-title">This Website</span>
+                    <span className="tag-classic bg-accent-purple text-white">META</span>
                   </div>
-                  <p className="text-text-secondary text-sm mb-3">
-                    Personal site with that authentic dot-com era aesthetic. Pixel fonts, retro buttons, and a live Bitcoin ticker because why not.
+                  <p className="project-desc">
+                    Personal site with that authentic dot-com era aesthetic. Classic Mac OS inspired design.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs border border-foreground px-2 py-1">Next.js 15</span>
-                    <span className="text-xs border border-foreground px-2 py-1">React 19</span>
-                    <span className="text-xs border border-foreground px-2 py-1">Tailwind 4</span>
+                  <div className="project-tags">
+                    <span className="tag-classic">Next.js 15</span>
+                    <span className="tag-classic">React 19</span>
+                    <span className="tag-classic">Tailwind 4</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Reading Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Reading</h2>
-
-          {/* Currently Reading */}
-          <div className="mb-8">
-            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Currently Reading</h3>
-            <div className="pixel-border bg-background p-6 relative">
-              <div className="flex items-start gap-4">
-                <div className="w-16 h-20 border-2 border-foreground overflow-hidden bg-background">
-                  <Image
-                    src="/thebigshort.png"
-                    alt="The Pragmatic Programmer book cover"
-                    width={64}
-                    height={80}
-                    className="w-full h-full object-cover"
-                  />
+        {/* Reading */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Reading</span>
+          </div>
+          <div className="p-4">
+            <h2 className="section-header">Currently Reading</h2>
+            
+            <div className="book-item">
+              <Image src="/thebigshort.png" alt="The Big Short" width={48} height={64} className="book-cover" />
+              <div className="flex-1">
+                <div className="font-bold">The Big Short</div>
+                <div className="text-sm text-text-secondary mb-2">Michael Lewis</div>
+                <div className="progress-bar-classic">
+                  <div className="progress-bar-fill" style={{ width: '67%' }}></div>
                 </div>
-                <div className="flex-1">
-                  <h4 className="text-lg font-bold text-foreground mb-2">The Big Short</h4>
-                  <p className="text-text-secondary mb-2">Micheal Lewis</p>
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1">
-                      <div className="w-full h-3 border-2 border-foreground bg-background relative">
-                        <div className="h-full bg-accent-blue" style={{ width: '67%' }}></div>
-                      </div>
-                      <p className="text-xs text-text-secondary mt-1">67% complete</p>
-                    </div>
-                    <div className="text-xs text-accent-blue font-mono">
-                      ████████████▓▓▓▓▓
-                    </div>
-                  </div>
+                <div className="text-xs text-text-secondary mt-1">67% complete</div>
+              </div>
+            </div>
+
+            <h2 className="section-header mt-6">Reading List</h2>
+            
+            <div className="book-item item-hover">
+              <Image src="/cleanarchitecture.png" alt="Clean Architecture" width={48} height={64} className="book-cover" />
+              <div>
+                <div className="font-bold">Clean Architecture</div>
+                <div className="text-sm text-text-secondary">Robert C. Martin</div>
+                <div className="flex gap-2 mt-1">
+                  <span className="tag-classic bg-accent-purple text-white">TECHNICAL</span>
+                  <span className="text-xs text-text-secondary">4.2/5</span>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Reading List */}
-          <div className="mb-8">
-            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Reading List</h3>
-            <div className="space-y-4">
-              <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
-                    <Image
-                      src="/cleanarchitecture.png"
-                      alt="Clean Architecture book cover"
-                      width={48}
-                      height={64}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base font-bold text-foreground mb-1">
-                      Clean Architecture
-                    </h4>
-                    <p className="text-sm text-text-secondary mb-1">Robert C. Martin</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
-                      <span className="text-xs text-text-secondary">★ 4.2/5</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-l-4 border-accent-purple pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
-                    <Image
-                      src="/zerotoone.png"
-                      alt="Zero to One book cover"
-                      width={48}
-                      height={64}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base font-bold text-foreground mb-1">
-                      Zero to One
-                    </h4>
-                    <p className="text-sm text-text-secondary mb-1">Peter Thiel</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-accent-blue text-background px-2 py-1 font-bold">BUSINESS</span>
-                      <span className="text-xs text-text-secondary">★ 4.1/5</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-l-4 border-accent-blue pl-4 pixel-border bg-background p-4 hover:bg-border-light transition-all duration-150 cursor-pointer work-item">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-16 border-2 border-foreground overflow-hidden bg-background flex-shrink-0">
-                    <Image
-                      src="/datainstense.png"
-                      alt="Designing Data-Intensive Applications book cover"
-                      width={48}
-                      height={64}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="text-base font-bold text-foreground mb-1">
-                      Designing Data-Intensive Applications
-                    </h4>
-                    <p className="text-sm text-text-secondary mb-1">Martin Kleppmann</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">TECHNICAL</span>
-                      <span className="text-xs text-text-secondary">★ 4.7/5</span>
-                    </div>
-                  </div>
+            <div className="book-item item-hover">
+              <Image src="/zerotoone.png" alt="Zero to One" width={48} height={64} className="book-cover" />
+              <div>
+                <div className="font-bold">Zero to One</div>
+                <div className="text-sm text-text-secondary">Peter Thiel</div>
+                <div className="flex gap-2 mt-1">
+                  <span className="tag-classic bg-accent-blue text-white">BUSINESS</span>
+                  <span className="text-xs text-text-secondary">4.1/5</span>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Recently Finished */}
-          <div className="mb-8">
-            <h3 className="text-lg font-bold mb-4 text-foreground ascii-decoration">Recently Finished</h3>
-            <div className="space-y-4">
-              <div className="border-l-4 border-border-light pl-4 pixel-border bg-border-light p-4 opacity-80">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-base font-bold text-foreground mb-1">
-                      Tools and Text Editors [x]
-                    </h4>
-                    <p className="text-sm text-text-secondary mb-1">Various Authors</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs bg-foreground text-background px-2 py-1 font-bold">COMPLETED</span>
-                      <span className="text-xs text-text-secondary">April 8, 2024</span>
-                    </div>
-                  </div>
-                  <div className="text-accent-blue">[x]</div>
+            <div className="book-item item-hover">
+              <Image src="/datainstense.png" alt="Designing Data-Intensive Applications" width={48} height={64} className="book-cover" />
+              <div>
+                <div className="font-bold">Designing Data-Intensive Applications</div>
+                <div className="text-sm text-text-secondary">Martin Kleppmann</div>
+                <div className="flex gap-2 mt-1">
+                  <span className="tag-classic bg-accent-purple text-white">TECHNICAL</span>
+                  <span className="text-xs text-text-secondary">4.7/5</span>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Reading Stats */}
-          <div className="pixel-border bg-background p-6">
-            <h3 className="text-lg font-bold mb-4 text-foreground text-center">Reading Stats</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div className="pixel-border bg-border-light p-3">
-                <div className="text-2xl font-bold text-accent-blue">12</div>
-                <div className="text-xs text-text-secondary">Books This Year</div>
+            <h2 className="section-header mt-6">Reading Stats</h2>
+            
+            <div className="stats-grid">
+              <div className="stat-box">
+                <div className="stat-value">12</div>
+                <div className="stat-label">Books This Year</div>
               </div>
-              <div className="pixel-border bg-border-light p-3">
-                <div className="text-2xl font-bold text-accent-purple">67%</div>
-                <div className="text-xs text-text-secondary">Current Progress</div>
+              <div className="stat-box">
+                <div className="stat-value">67%</div>
+                <div className="stat-label">Current Progress</div>
               </div>
-              <div className="pixel-border bg-border-light p-3">
-                <div className="text-2xl font-bold text-foreground">3</div>
-                <div className="text-xs text-text-secondary">Books/Month Avg</div>
+              <div className="stat-box">
+                <div className="stat-value">3</div>
+                <div className="stat-label">Books/Month</div>
               </div>
-              <div className="pixel-border bg-border-light p-3">
-                <div className="text-2xl font-bold text-accent-blue">FIRE</div>
-                <div className="text-xs text-text-secondary">7 Day Streak</div>
+              <div className="stat-box">
+                <div className="stat-value">7</div>
+                <div className="stat-label">Day Streak</div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Contact Section */}
-      <section className="mb-16">
-        <div className="section-divider pt-8">
-          <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Contact</h2>
-
-          <div className="pixel-border bg-background p-8">
-            <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
-
-              {/* LinkedIn */}
-              <div className="flex items-center gap-4 work-item">
-                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                  <Image
-                    src="/linkedin.png"
-                    alt="LinkedIn"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
+        {/* Contact */}
+        <div className="window-panel mb-6">
+          <div className="window-titlebar">
+            <div className="window-button close"></div>
+            <div className="window-button minimize"></div>
+            <div className="window-button maximize"></div>
+            <span className="text-xs font-bold ml-2">Contact</span>
+          </div>
+          <div className="p-4">
+            <h2 className="section-header">Get In Touch</h2>
+            
+            <div className="flex flex-wrap gap-6 justify-center mb-6">
+              <a href="https://linkedin.com/in/ryanmorrissey" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 item-hover p-2 rounded no-underline">
+                <div className="contact-icon">
+                  <Image src="/linkedin.png" alt="LinkedIn" width={32} height={32} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">LinkedIn</h3>
-                  <p className="text-text-secondary text-sm">Professional network</p>
+                  <div className="font-bold text-foreground">LinkedIn</div>
+                  <div className="text-xs text-text-secondary">Professional network</div>
                 </div>
-              </div>
+              </a>
 
-              {/* GitHub */}
-              <div className="flex items-center gap-4 work-item">
-                <div className="w-12 h-12 border-2 border-foreground overflow-hidden">
-                  <Image
-                    src="/github.png"
-                    alt="GitHub"
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-cover"
-                  />
+              <a href="https://github.com/seyoka" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 item-hover p-2 rounded no-underline">
+                <div className="contact-icon">
+                  <Image src="/github.png" alt="GitHub" width={32} height={32} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">GitHub</h3>
-                  <p className="text-text-secondary text-sm">Code repositories</p>
+                  <div className="font-bold text-foreground">GitHub</div>
+                  <div className="text-xs text-text-secondary">Code repositories</div>
                 </div>
-              </div>
-
+              </a>
             </div>
 
-            {/* Email */}
-            <div className="mt-8 text-center">
-              <div className="inline-block pixel-border bg-border-light p-4">
-                <h3 className="text-lg font-bold text-foreground mb-2">Email</h3>
-                <p className="text-accent-blue font-mono text-sm">
-                  ryanj[dot]morrissey@gmail.com
-                </p>
-                <p className="text-xs text-text-secondary mt-2">
-                  (Because spam bots can&apos;t handle the dot notation )
-                </p>
+            <div className="field-inset text-center">
+              <div className="font-bold mb-1">Email</div>
+              <div className="font-mono text-sm text-accent-blue">
+                ryanj[dot]morrissey[at]gmail.com
+              </div>
+              <div className="text-xs text-text-secondary mt-2">
+                (Obfuscated to prevent spam harvesting)
               </div>
             </div>
           </div>
         </div>
-      </section>
+
+        {/* Footer */}
+        <div className="text-center text-xs text-text-secondary py-4">
+          <p>Copyright 2026 Ryan Morrissey. All rights reserved.</p>
+          <p className="mt-1">You are visitor #<span className="font-mono">000,042</span></p>
+        </div>
+
+      </div>
     </div>
   );
 }
