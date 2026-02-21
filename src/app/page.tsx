@@ -79,24 +79,15 @@ export default function Home() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      {/* Theme Toggle */}
+      {/* Theme Toggle Button */}
       <div className="theme-toggle-container">
-        <div className="theme-toggle-label">
-          {theme === "light" ? "☀️" : "🌙"}
-        </div>
-        <div
-          className="theme-toggle"
-          data-theme={theme}
+        <button
+          className="btn-retro theme-btn"
           onClick={toggleTheme}
+          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         >
-          <div className="theme-toggle-slider">
-            {theme === "light" ? "☀" : "☾"}
-          </div>
-          <div className="theme-toggle-labels">
-            <span>L</span>
-            <span>D</span>
-          </div>
-        </div>
+          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+        </button>
       </div>
       {/* Bitcoin Ticker */}
       <div className="mb-8 crypto-ticker p-3">
@@ -222,23 +213,36 @@ export default function Home() {
         <div className="section-divider pt-8">
           <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Skills & Tech Stack</h2>
 
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-            {/* Placeholder tech icons - will be replaced with actual images */}
-            {Array.from({ length: 12 }, (_, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 p-3 pixel-border bg-background hover:bg-border-light transition-all duration-100 cursor-pointer group">
-                <div className="w-8 h-8 bg-text-secondary border border-foreground flex items-center justify-center text-background text-xs font-bold">
-                  {i + 1}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            {[
+              { name: "TypeScript", icon: "TS", color: "bg-accent-blue" },
+              { name: "React", icon: "⚛️", color: "bg-accent-blue" },
+              { name: "Next.js", icon: "N", color: "bg-foreground" },
+              { name: "Convex", icon: "◈", color: "bg-accent-purple" },
+              { name: "Tailwind", icon: "🎨", color: "bg-accent-blue" },
+              { name: "Node.js", icon: "⬢", color: "bg-accent-blue" },
+              { name: "Python", icon: "🐍", color: "bg-accent-purple" },
+              { name: "ethers.js", icon: "Ξ", color: "bg-accent-purple" },
+              { name: "Postgres", icon: "🐘", color: "bg-accent-blue" },
+              { name: "Docker", icon: "🐳", color: "bg-accent-blue" },
+              { name: "Git", icon: "⎇", color: "bg-foreground" },
+              { name: "Fly.io", icon: "✈", color: "bg-accent-purple" },
+            ].map((tech, i) => (
+              <div key={i} className="flex flex-col items-center gap-2 p-3 pixel-border bg-background hover:bg-border-light transition-all duration-100 cursor-pointer group work-item">
+                <div className={`w-10 h-10 ${tech.color} border-2 border-foreground flex items-center justify-center text-background text-sm font-bold`}>
+                  {tech.icon}
                 </div>
-                <span className="text-xs text-text-secondary text-center group-hover:text-foreground">
-                  Tech {i + 1}
+                <span className="text-xs text-text-secondary text-center group-hover:text-foreground font-bold">
+                  {tech.name}
                 </span>
               </div>
             ))}
           </div>
 
           <div className="mt-6 p-4 pixel-border bg-border-light">
-            <p className="text-sm text-text-secondary text-center">
-              💾 Tech stack icons coming soon!
+            <h3 className="text-sm font-bold text-foreground mb-2">Currently Learning</h3>
+            <p className="text-sm text-text-secondary">
+              🎯 Quantitative trading • Rust • System design at scale
             </p>
           </div>
         </div>
@@ -248,10 +252,76 @@ export default function Home() {
       <section className="mb-16">
         <div className="section-divider pt-8">
           <h2 className="text-2xl font-bold mb-8 text-foreground retro-text">Projects</h2>
-          <div className="pixel-border bg-border-light p-6">
-            <p className="text-text-secondary text-center ascii-decoration">
-              Coming soon... Check back later for updates!
-            </p>
+          
+          <div className="space-y-6">
+            {/* Carbon Copy */}
+            <div className="pixel-border bg-background p-6 work-item">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-accent-purple border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
+                  CC
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-bold text-foreground">Carbon Copy</h3>
+                    <span className="text-xs bg-accent-blue text-background px-2 py-1 font-bold">ACTIVE</span>
+                  </div>
+                  <p className="text-text-secondary text-sm mb-3">
+                    Copy trading platform for prediction markets. Follow top traders and automatically mirror their positions on Polymarket.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs border border-foreground px-2 py-1">Next.js</span>
+                    <span className="text-xs border border-foreground px-2 py-1">Convex</span>
+                    <span className="text-xs border border-foreground px-2 py-1">Polymarket API</span>
+                    <span className="text-xs border border-foreground px-2 py-1">ethers.js</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Time Tracking Tool */}
+            <div className="pixel-border bg-background p-6 work-item">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-accent-blue border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
+                  ⏱
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-bold text-foreground">Time Tracking Tool</h3>
+                    <span className="text-xs bg-border-light text-foreground px-2 py-1 font-bold border border-foreground">SHIPPED</span>
+                  </div>
+                  <p className="text-text-secondary text-sm mb-3">
+                    Simple tool for tracking time spent on projects and tasks. Built because existing tools were too bloated.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs border border-foreground px-2 py-1">React</span>
+                    <span className="text-xs border border-foreground px-2 py-1">Node.js</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* This Site */}
+            <div className="pixel-border bg-background p-6 work-item">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-foreground border-2 border-foreground flex items-center justify-center text-background font-bold text-lg">
+                  🌐
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-bold text-foreground">This Website</h3>
+                    <span className="text-xs bg-accent-purple text-background px-2 py-1 font-bold">META</span>
+                  </div>
+                  <p className="text-text-secondary text-sm mb-3">
+                    Personal site with that authentic dot-com era aesthetic. Pixel fonts, retro buttons, and a live Bitcoin ticker because why not.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs border border-foreground px-2 py-1">Next.js 15</span>
+                    <span className="text-xs border border-foreground px-2 py-1">React 19</span>
+                    <span className="text-xs border border-foreground px-2 py-1">Tailwind 4</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

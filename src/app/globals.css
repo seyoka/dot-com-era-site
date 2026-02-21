@@ -180,22 +180,17 @@ a:hover {
   100% { transform: translate(0); }
 }
 
-/* Theme toggle enhanced animations */
-.theme-toggle {
-  position: relative;
-  width: 80px;
-  height: 32px;
-  border: 2px solid var(--foreground);
-  background: var(--background);
-  cursor: pointer;
-  transition: all 0.1s ease;
-  box-shadow: 2px 2px 0px var(--border-light);
+/* Theme toggle button */
+.theme-btn {
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 90px;
+  text-align: center;
 }
 
-.theme-toggle:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px var(--border-light);
-  animation: retro-buzz 0.2s ease;
+.theme-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--foreground);
 }
 
 @keyframes retro-buzz {
